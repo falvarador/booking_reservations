@@ -1,6 +1,6 @@
 # Booking Reservations.
 
-This is a Laravel project for the booking reservations.
+This is a Laravel project for the booking reservations 🐘
 
 ## Requirements
 
