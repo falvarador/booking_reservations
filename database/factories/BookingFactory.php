@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Service;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,11 @@ class BookingFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => User::inRandomOrder()->first()->id,
+            "dojo_id" => Dojo::inRandomOrder()->first()->id,
+            'service_id' => Service::inRandomOrder()->first()->id,
+            'booking_date' => $this->faker->date,
+            'status' => $this->faker->randomElement(['Pending', 'Completed', 'Cancelled']),
         ];
     }
 }
