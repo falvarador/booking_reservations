@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -11,7 +13,8 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
+        $payments = Payment::with('booking')->get();
+        return view('payments.index', compact('payments'));
     }
 
     /**
@@ -19,7 +22,8 @@ class PaymentController extends Controller
      */
     public function create()
     {
-        //
+        $bookings = Booking::all();
+        return view('payments.create', compact('bookings'));
     }
 
     /**
@@ -27,7 +31,8 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Payment::create($request->all());
+        return redirect()->route('payments.index');
     }
 
     /**
@@ -35,7 +40,8 @@ class PaymentController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $payment = Payment::with('booking')->findOrFail($id);
+        return view('payments.show', compact('payment'));
     }
 
     /**
@@ -43,7 +49,9 @@ class PaymentController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $payment = Payment::findOrFail($id);
+        $bookings = Booking::all();
+        return view('payments.edit', compact('payment', 'bookings'));
     }
 
     /**
@@ -51,7 +59,9 @@ class PaymentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $payment = Payment::findOrFail($id);
+        $payment->update($request->all());
+        return redirect()->route('payments.index');
     }
 
     /**
@@ -59,6 +69,7 @@ class PaymentController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Payment::destroy($id);
+        return redirect()->route('payments.index');
     }
 }

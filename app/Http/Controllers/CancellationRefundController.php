@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
+use App\Models\CancellationRefund;
 use Illuminate\Http\Request;
 
 class CancellationRefundController extends Controller
@@ -11,7 +13,8 @@ class CancellationRefundController extends Controller
      */
     public function index()
     {
-        //
+        $refunds = CancellationRefund::with('booking')->get();
+        return view('cancellation_refunds.index', compact('refunds'));
     }
 
     /**
@@ -19,7 +22,8 @@ class CancellationRefundController extends Controller
      */
     public function create()
     {
-        //
+        $bookings = Booking::all();
+        return view('cancellation_refunds.create', compact('bookings'));
     }
 
     /**
@@ -27,7 +31,8 @@ class CancellationRefundController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        CancellationRefund::create($request->all());
+        return redirect()->route('cancellation_refunds.index');
     }
 
     /**
@@ -35,7 +40,8 @@ class CancellationRefundController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $refund = CancellationRefund::with('booking')->findOrFail($id);
+        return view('cancellation_refunds.show', compact('refund'));
     }
 
     /**
@@ -43,7 +49,9 @@ class CancellationRefundController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $refund = CancellationRefund::findOrFail($id);
+        $bookings = Booking::all();
+        return view('cancellation_refunds.edit', compact('refund', 'bookings'));
     }
 
     /**
@@ -51,7 +59,9 @@ class CancellationRefundController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $refund = CancellationRefund::findOrFail($id);
+        $refund->update($request->all());
+        return redirect()->route('cancellation_refunds.index');
     }
 
     /**
@@ -59,6 +69,7 @@ class CancellationRefundController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        CancellationRefund::destroy($id);
+        return redirect()->route('cancellation_refunds.index');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Location;
 use Illuminate\Http\Request;
 
 class LocationController extends Controller
@@ -11,7 +12,8 @@ class LocationController extends Controller
      */
     public function index()
     {
-        //
+        $locations = Location::all();
+        return view('locations.index', compact('locations'));
     }
 
     /**
@@ -19,7 +21,7 @@ class LocationController extends Controller
      */
     public function create()
     {
-        //
+        return view('locations.create');
     }
 
     /**
@@ -27,7 +29,8 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Location::create($request->all());
+        return redirect()->route('locations.index');
     }
 
     /**
@@ -35,7 +38,8 @@ class LocationController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $location = Location::findOrFail($id);
+        return view('locations.show', compact('location'));
     }
 
     /**
@@ -43,7 +47,8 @@ class LocationController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $location = Location::findOrFail($id);
+        return view('locations.edit', compact('location'));
     }
 
     /**
@@ -51,7 +56,9 @@ class LocationController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $location = Location::findOrFail($id);
+        $location->update($request->all());
+        return redirect()->route('locations.index');
     }
 
     /**
@@ -59,6 +66,7 @@ class LocationController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Location::destroy($id);
+        return redirect()->route('locations.index');
     }
 }

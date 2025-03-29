@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Service;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class BookingController extends Controller
@@ -12,8 +14,7 @@ class BookingController extends Controller
      */
     public function index()
     {
-        $bookings = Booking::all();
-
+        $bookings = Booking::with('user', 'service')->get();
         return view('bookings.index', compact('bookings'));
     }
 
@@ -22,7 +23,9 @@ class BookingController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all();
+        $services = Service::all();
+        return view('bookings.create', compact('users', 'services'));
     }
 
     /**
@@ -30,7 +33,8 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Booking::create($request->all());
+        return redirect()->route('bookings.index');
     }
 
     /**
@@ -38,7 +42,8 @@ class BookingController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $booking = Booking::with('user', 'service')->findOrFail($id);
+        return view('bookings.show', compact('booking'));
     }
 
     /**
@@ -46,7 +51,10 @@ class BookingController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $booking = Booking::findOrFail($id);
+        $users = User::all();
+        $services = Service::all();
+        return view('bookings.edit', compact('booking', 'users', 'services'));
     }
 
     /**
@@ -54,7 +62,9 @@ class BookingController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $booking = Booking::findOrFail($id);
+        $booking->update($request->all());
+        return redirect()->route('bookings.index');
     }
 
     /**
@@ -62,6 +72,7 @@ class BookingController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Booking::destroy($id);
+        return redirect()->route('bookings.index');
     }
 }
