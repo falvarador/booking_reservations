@@ -17,6 +17,16 @@ class Booking extends Model
         'status',
     ];
 
+    public function cancellationRefunds()
+    {
+        return $this->hasMany(CancellationRefund::class);
+    }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
