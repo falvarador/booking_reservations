@@ -15,7 +15,11 @@
 
 <body>
     <main class="container">
-        {{ $slot }}
+        <x-ui.navbar />
+
+        <section class="content">
+            {{ $slot }}
+        </section>
     </main>
 </body>
 

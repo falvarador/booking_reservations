@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::resource('bookings', BookingController::class);
 Route::resource('cancellation-refunds', CancellationRefundController::class);
