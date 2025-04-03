@@ -14,12 +14,9 @@
 </head>
 
 <body>
+    <x-ui.navbar />
     <main class="container">
-        <x-ui.navbar />
-
-        <section class="content">
-            {{ $slot }}
-        </section>
+        {{ $slot }}
     </main>
 </body>
 
